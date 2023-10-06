@@ -145,10 +145,9 @@
                             <td><?php echo $row['id'] ?></td>
                             <td><?php echo $row['name'] ?></td>
                             <td><?php echo $row['description'] ?></td>
-                            <td> <a href="partials/editarCargos.php?idCargos=<?=$row['id'] ?>"> <span data-feather="edit">
-                                        Edit</span></a>
+                            <td> <a href="partials/editarCargos.php?idCargos=<?=$row['id'] ?>"> <span class="glyphicon glyphicon-edit"></span></a>
                                 <a href="../../../database/delete.php?idCargos=<?= $row['id'] ?>" data-bs-toggle="modal"
-                                   data-bs-target="#exampleModal<?= $row['id'] ?>"> <i class="bi bi-search"></i></a> </td>
+                                   data-bs-target="#exampleModal<?= $row['id'] ?>"> <span class="glyphicon glyphicon-remove"></a> </td>
                             </td>
                         </tr>
                         <?php
@@ -191,19 +190,20 @@
                     <?php
                     $consultaStaffs = $conn->query("SELECT * FROM staffs ORDER BY name;");
                     foreach ($consultaStaffs as $rowStaff) {
+                        $stmt = $conn->prepare("SELECT * FROM cargos WHERE id=?");
+                        $stmt->execute([$rowStaff['id_position']]);
+                        $nameCargo = $stmt->fetch();
                         ?>
                         <tr>
                             <td><?php echo $rowStaff['id'] ?></td>
                             <td><?php echo $rowStaff['name'] ?></td>
                             <td><?php echo $rowStaff['lastname'] ?></td>
-                            <td><?php echo $rowStaff['id_position'] ?></td>
+                            <td><?php echo $nameCargo ? $nameCargo['name'] : '---' ?></td>
                             <td><?php echo date("d/m/Y", strtotime($rowStaff['birthday'])) ?></td>
                             <td><?php echo $rowStaff['wage'] ?></td>
-                            <td> <a href="partials/editarStaff.php?idStaff=<?=$rowStaff['id'] ?>"> <span data-feather="edit">
-                                        Edit</span></a>
+                            <td> <a href="partials/editarStaff.php?idStaff=<?=$rowStaff['id'] ?>"><span class="glyphicon glyphicon-edit"></span></a>
                             <a href="../../../database/delete.php?idStaff=<?= $rowStaff['id'] ?>" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal<?= $rowStaff['id'] ?>"> <span
-                                    data-feather="trash-2"> Delete </span></a> </td>
+                                    data-bs-target="#exampleModal<?= $rowStaff['id'] ?>"> <span class="glyphicon glyphicon-remove"></a> </td>
                             </td>
                         </tr>
                         <?php
